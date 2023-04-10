@@ -1,3 +1,8 @@
+"""
+Name: Samuel Barroso
+ID: 1844307
+"""
+
 import csv
 
 #nested dictionary
@@ -7,19 +12,19 @@ import csv
 master_list = {}
 
 #opens the first csv file and adds each item entry to master_list
-with open('ManufacturerList.csv') as csv_file:
+with open('FinalProjectManufacturerListINPUT.csv') as csv_file:
     csv_reader = csv.reader(csv_file)
     for row in csv_reader:
         id = row[0]
         master_list[id] = {"manufacturer": row[1], "item_type": row[2], "condition": row[3]}
 
 #opens the remaining csv files and uses the update() function to include new values to master_list
-with open('PriceList.csv') as csv_file:
+with open('FinalProjectPriceListINPUT.csv') as csv_file:
     csv_reader = csv.reader(csv_file)
     for row in csv_reader:
         id = row[0]
         master_list[id].update({"price": row[1]})
-with open('ServiceDatesList.csv') as csv_file:
+with open('FinalProjectServiceDatesListINPUT.csv') as csv_file:
     csv_reader = csv.reader(csv_file)
     for row in csv_reader:
         id = row[0]
@@ -52,7 +57,7 @@ full_invetory = new_list
 
 #takes full_inventory and writes values to a new csv file
 #rows are ordered by id, manufacturer, item_type, price, service_date, and condition
-with open('FullInventory.csv', 'w', encoding='UTF8', newline='') as f:
+with open('FinalProjectFullInventory.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     for item in full_invetory:
         ordered_array = []
@@ -81,7 +86,7 @@ for id in master_list:
 #writes each item type to it's own csv file
 #all items are sorted by their item ID
 for dict in item_type_inventory:
-    file_name = dict.capitalize() + "Inventory.csv"
+    file_name = "FinalProject" + dict.capitalize() + "Inventory.csv"
     with open(file_name, 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         item_list = []
@@ -153,7 +158,7 @@ past_date_inventory = temp_dict
 
 #takes past_date_inventory and writes values to a new csv file
 #rows are ordered by id, manufacturer, item_type, price, service_date, and condition
-with open('PastServiceDateInventory.csv', 'w', encoding='UTF8', newline='') as f:
+with open('FinalProjectPastServiceDateInventory.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     for item in past_date_inventory:
         ordered_array = []
@@ -192,7 +197,7 @@ damaged_invetory = temp_dict
 
 #takes damaged_invetory and writes values to a new csv file
 #rows are ordered by id, manufacturer, item_type, price,and service_date
-with open('DamagedInventory.csv', 'w', encoding='UTF8', newline='') as f:
+with open('FinalProjectDamagedInventory.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     for item in damaged_invetory:
         ordered_array = []
