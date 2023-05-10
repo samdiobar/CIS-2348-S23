@@ -229,3 +229,91 @@ for char in old_list:
 old_list = new_list
 print(new_list)
 """
+
+#PART 2
+
+#loop infinitely until user exits with "q"
+while True:
+
+    #takes query input from user
+    user_input = input("Enter your query: ")
+    
+    #exit loop if input is "q"
+    if (user_input == "q"):
+        break
+    
+    #COME BACK TO) THISI+)SAFOIHSDFNIADGNFIHDJGFIGDFIHDMSIHGFJSDHFDS*UFDSFHNDISf
+    manufacturers = {"apple", "dell", "lenovo", "samsung"}
+    item_types = {"phone", "laptop", "tower"}
+
+    #parse through user_input and find any manufacturer or item_type information from query
+    user_input_array = user_input.split()
+    input_manufacturer = ''
+    input_item = ''
+    for str in user_input_array:
+        if str in manufacturers:
+            if input_manufacturer == '':
+                input_manufacturer = str
+            else:
+                print("No such item in inventory")
+                continue
+        if str in item_types:
+            if input_item == '':
+                input_item = str
+            else:
+                print("No such item in inventory")
+                continue
+            
+    #if either the manufacturer or the item type are not in the inventory,
+    #   more that one of either type is submitted, or
+    #   the combination is not in the inventory
+    #output "No such item in inventory"
+    if (input_manufacturer.lower() == '') or (input_item.lower() == ''):
+        print("No such item in inventory")
+        continue
+    
+    #checks if the item is in inventory and if the item is valid
+    today = "5/9/2023"
+    inventory_entry = {}
+    in_inventory = False
+    for id in master_list:
+        temp_manufacturer = master_list[id]['manufacturer'].lower().replace(" ", "")
+        temp_item_type = master_list[id]['item_type'].lower().replace(" ", "")
+        #checks if past service date or damaged
+        if master_list[id]['condition'] != "" or time_greater_than(today, master_list[id]['service_date']):
+            pass
+        elif (input_manufacturer.lower() == temp_manufacturer) and (input_item.lower() == temp_item_type):
+            if in_inventory:
+                #when there is a duplicate item, check to see which is more expensive
+                if (inventory_entry['price'] < master_list[id]['price']):
+                    inventory_entry = master_list[id]
+                    inventory_entry.update({"id": id})
+                pass
+            else:
+                inventory_entry = master_list[id]
+                inventory_entry.update({"id": id})
+                in_inventory = True
+    
+    #if in inventory, print item information
+    if (in_inventory):
+        print("Your item is ID: " + inventory_entry['id'] + ", Manufacturer: " + inventory_entry['manufacturer'] + ", Item Type: " + inventory_entry['item_type']+ ", Price: " + inventory_entry['price'])
+    else:
+        print("No such item in inventory")
+        continue
+
+    #finds similar item from another manufacturer with similar price
+    alternate_exists = False
+    item_with_closest_price = {}
+    price_difference = 99999999
+    for id in master_list:
+        temp_price_difference = abs(int(master_list[id]['price']) - int(inventory_entry['price']))
+        if (master_list[id]['item_type'] == input_item) and (id != inventory_entry['id']) and (temp_price_difference < price_difference):
+            if master_list[id]['condition'] != "" or time_greater_than(today, master_list[id]['service_date']):
+                pass
+            else:
+                item_with_closest_price = master_list[id]
+                item_with_closest_price.update({"id": id})
+                price_difference = temp_price_difference
+                alternate_exists = True
+    if alternate_exists:
+        print("You may, also, consider ID: "+ item_with_closest_price['id'] + ", Manufacturer: " + item_with_closest_price['manufacturer'] + ", Item Type: " + item_with_closest_price['item_type']+ ", Price: " + item_with_closest_price['price'])
